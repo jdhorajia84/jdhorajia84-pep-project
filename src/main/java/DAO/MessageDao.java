@@ -29,9 +29,6 @@ public class MessageDao implements BaseDao<Message> {
         throw new DaoException(errorMessage, e);
     }
 
-    /**
-     * Retrieve a specific message by its ID from the database
-     */
     @Override
     public Optional<Message> getById(int id) {
         String sql = "SELECT * FROM message WHERE message_id = ?";
@@ -49,9 +46,6 @@ public class MessageDao implements BaseDao<Message> {
         return Optional.empty();
     }
 
-    /**
-     * Retrieves all messages from the database
-     */
     @Override
     public List<Message> getAll() {
         String sql = "SELECT * FROM message";
@@ -69,9 +63,6 @@ public class MessageDao implements BaseDao<Message> {
         return messages;
     }
 
-    /**
-     * Retrieves all messages posted by a specific account from the database
-     */
     public List<Message> getMessagesByAccountId(int accountId) {
         String sql = "SELECT * FROM message WHERE posted_by = ?";
         Connection conn = ConnectionUtil.getConnection();
@@ -86,9 +77,6 @@ public class MessageDao implements BaseDao<Message> {
         return new ArrayList<>();
     }
 
-    /**
-     * Insert a new message into the database
-     */
     @Override
     public Message insert(Message message) {
         String sql = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?)";
@@ -113,9 +101,7 @@ public class MessageDao implements BaseDao<Message> {
         throw new DaoException("Failed to insert message");
     }
 
-    /**
-     * Update an existing message in the database
-     */
+    
     @Override
     public boolean update(Message message) {
         String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
@@ -133,9 +119,7 @@ public class MessageDao implements BaseDao<Message> {
         return rowsUpdated > 0;
     }
 
-    /**
-     * Delete a message from the database
-     */
+    
     @Override
     public boolean delete(Message message) {
         String sql = "DELETE FROM message WHERE message_id = ?";
@@ -150,9 +134,6 @@ public class MessageDao implements BaseDao<Message> {
         return rowsUpdated > 0;
     }
 
-    /**
-     * Helper method to convert a ResultSet row into a Message object
-     */
     private Message mapResultSetToMessage(ResultSet rs) throws SQLException {
         int messageId = rs.getInt("message_id");
         int postedBy = rs.getInt("posted_by");
@@ -161,9 +142,6 @@ public class MessageDao implements BaseDao<Message> {
         return new Message(messageId, postedBy, messageText, timePostedEpoch);
     }
 
-    /**
-     * Transforms a ResultSet into a List of Message objects
-     */
     private List<Message> mapResultSetToList(ResultSet rs) throws SQLException {
         List<Message> messages = new ArrayList<>();
         while (rs.next()) {
